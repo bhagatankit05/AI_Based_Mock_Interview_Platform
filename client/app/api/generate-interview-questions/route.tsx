@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import ImageKit from "imagekit";
 import { error } from "console";
+import axios from "axios";
 
 var imagekit = new ImageKit({
     publicKey : "your_public_api_key",
@@ -26,8 +27,14 @@ export async function POST(req:NextRequest) {
             isPrivateFile:false,
             useUniqueFileName:true,
         });
+
+        //Call n8n Webhook to process the file
+        const result = await axios.post('https://bhagatankit05.app.n8n.cloud/webhook/generate-interview-question',{
+            resumeUrl:uploadResponse?.url
+        });
+        console.log(result.data);
         
-        return NextResponse.json({url:uploadResponse.url},{status:200})
+        return NextResponse.json(result.data,{status:200})
     }
     catch(error: any){
         console.error("Upload error:",error);
