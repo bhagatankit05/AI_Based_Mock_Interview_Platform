@@ -14,6 +14,7 @@ import ResumeUpload from './ResumeUpload'
 import JobDescription from './JobDescription'
 import { DialogClose } from '@radix-ui/react-dialog'
 import axios from 'axios'
+import { Loader2Icon } from 'lucide-react'
 
 const CreateInterviewDialog = () => {
     const [formData, setFormData] = useState<any>();
@@ -76,7 +77,7 @@ const CreateInterviewDialog = () => {
                         <Button variant="ghost">Cancel</Button>
                     </DialogClose>
                     <Button onClick={onSubmit} disabled={loading || !file}>
-                        {loading ? "Submitting..." : "Submit"}
+                        {loading && <Loader2Icon className='animate-spin'/>} Submit
                     </Button>
                 </DialogFooter>
             </DialogContent>
