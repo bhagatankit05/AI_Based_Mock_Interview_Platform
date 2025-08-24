@@ -29,7 +29,7 @@ export async function POST(req:NextRequest) {
         });
 
         //Call n8n Webhook to process the file
-        const result = await axios.post('https://bhagatankit05.app.n8n.cloud/webhook/generate-interview-question',{
+        const result = await axios.post('https://bhagatankit05.app.n8n.cloud/webhook-test/generate-interview-question',{
             resumeUrl:uploadResponse?.url
         });
         console.log(result.data);
