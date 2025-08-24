@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
     Dialog,
     DialogContent,
@@ -15,11 +15,16 @@ import JobDescription from './JobDescription'
 import { DialogClose } from '@radix-ui/react-dialog'
 import axios from 'axios'
 import { Loader2Icon } from 'lucide-react'
+import { useMutation } from 'convex/react'
+import { api } from '@/convex/_generated/api'
+import { UserDetailContext } from '@/context/UserDetailContext'
 
 const CreateInterviewDialog = () => {
     const [formData, setFormData] = useState<any>();
     const [file, setFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
+    const { userDetail, setUserDetail } = useContext(UserDetailContext)
+    const saveInterviewQuestion = useMutation(api.Interview.SaveInterviewQuestion);
 
     const onHandleInputChange = (field: string, value: string) => {
         setFormData((prev: any) => ({
@@ -38,6 +43,15 @@ const CreateInterviewDialog = () => {
         try {
             const result = await axios.post('/api/generate-interview-questions', formData);
             console.log("Response:", result.data);
+
+            //Save to database;
+            //@ts-ignore
+            const resp = await saveInterviewQuestion({
+                questions: result.data?.questions,
+                resumeUrl: result?.data.resumeUrl,
+                uid: userDetail?._id
+            })
+
         } catch (e: unknown) {
             if (axios.isAxiosError(e)) {
                 console.error("Axios error:", e.response?.data || e.message);
@@ -77,7 +91,7 @@ const CreateInterviewDialog = () => {
                         <Button variant="ghost">Cancel</Button>
                     </DialogClose>
                     <Button onClick={onSubmit} disabled={loading || !file}>
-                        {loading && <Loader2Icon className='animate-spin'/>} Submit
+                        {loading && <Loader2Icon className='animate-spin' />} Submit
                     </Button>
                 </DialogFooter>
             </DialogContent>
