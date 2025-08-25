@@ -34,14 +34,15 @@ const CreateInterviewDialog = () => {
     }
 
     const onSubmit = async () => {
-        if (!file) return;
         setLoading(true);
 
-        const formData = new FormData();
-        formData.append('file', file);
+        const formData_ = new FormData();
+        formData_.append('file', file??' ');
+        formData_?.append('jobTitle', formData?.jobTitle);
+        formData_?.append('jobDescription', formData?.jobDescription);
 
         try {
-            const result = await axios.post('/api/generate-interview-questions', formData);
+            const result = await axios.post('/api/generate-interview-question', formData_);
             console.log("Response:", result.data);
 
             //Save to database;
