@@ -3,17 +3,20 @@ import { mutation } from "./_generated/server";
 
 export const SaveInterviewQuestion = mutation({
   args: {
-    questions: v.any(),
+    questions: v.any(), // you can replace with v.array(v.string()) if always strings
     uid: v.id("UserTable"),
-    resumeUrl: v.string(), // This will store the ImageKit file URL
+    resumeUrl: v.optional(v.string()), // ImageKit file URL
+    jobTitle: v.optional(v.string()),
+    jobDescription: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    // Insert into InterviewSessionTable
     const result = await ctx.db.insert("InterviewSessionTable", {
       interviewQuestions: args.questions,
-      resumeUrl: args.resumeUrl, // URL coming from ImageKit after upload
+      resumeUrl: args.resumeUrl ?? "",
       userId: args.uid,
-      status: "draft"
+      status: "draft",
+      jobTitle: args.jobTitle ?? "",
+      jobDescription: args.jobDescription ?? "",
     });
 
     return {

@@ -50,7 +50,9 @@ const CreateInterviewDialog = () => {
             const resp = await saveInterviewQuestion({
                 questions: result.data?.questions,
                 resumeUrl: result?.data.resumeUrl,
-                uid: userDetail?._id
+                uid: userDetail?._id,
+                jobTitle: formData?.jobTitle,
+                jobDescription: formData?.jobDescription
             })
 
         } catch (e: unknown) {

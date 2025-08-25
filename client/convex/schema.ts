@@ -8,11 +8,13 @@ export default defineSchema({
         email: v.string(),
 
     }),
-    InterviewSessionTable: defineTable({
+      InterviewSessionTable: defineTable({
         interviewQuestions: v.any(),
-        resumeUrl: v.string(),
+        resumeUrl: v.union(v.string(),v.null()),
         userId: v.id('UserTable'),
-        status: v.string()
+        status: v.string(),
+        jobTitle: v.optional(v.string()),
+        jobDescription: v.optional(v.string()),
 
     })
 
