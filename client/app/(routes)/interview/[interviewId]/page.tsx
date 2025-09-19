@@ -1,10 +1,14 @@
+"use client"
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ArrowRight, Send } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import React from 'react'
 
 const Interview = () => {
+  const { interviewId } = useParams();
   return (
     <div className='flex flex-col items-center justify-center mt-24'>
       <div className='max-w-3xl w-full'>
@@ -14,17 +18,20 @@ const Interview = () => {
             Ready to Start Interview?
           </h2>
           <p className='text-gray-500 text-center'>The Interview will last 30 minutes. Are you ready to begin?</p>
-          <Button>Start Interview <ArrowRight /></Button>
+
+          <Link href={'/interview/' + interviewId + '/start'}>
+            <Button>Start Interview <ArrowRight /></Button>
+          </Link>
 
           <hr />
           <div className='p-3 bg-gray-50 rounded-2xl'>
-          <h2 className='font-semibold text-2xl'>Want to sent interview link to someone?</h2>
-          <div className='flex gap-5 w-full items-center max-w-xl mt-2'>
-          <Input placeholder='Enter email address' className='w-full max-w-xl' />
-          <Button> <Send/> </Button>
+            <h2 className='font-semibold text-2xl'>Want to sent interview link to someone?</h2>
+            <div className='flex gap-5 w-full items-center max-w-xl mt-2'>
+              <Input placeholder='Enter email address' className='w-full max-w-xl' />
+              <Button> <Send /> </Button>
+            </div>
           </div>
-          </div>
-        
+
         </div>
       </div>
     </div>
