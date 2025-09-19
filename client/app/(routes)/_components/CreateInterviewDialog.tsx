@@ -18,6 +18,8 @@ import { Loader2Icon } from 'lucide-react'
 import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { UserDetailContext } from '@/context/UserDetailContext'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 const CreateInterviewDialog = () => {
     const [formData, setFormData] = useState<any>();
@@ -25,6 +27,7 @@ const CreateInterviewDialog = () => {
     const [loading, setLoading] = useState(false);
     const { userDetail, setUserDetail } = useContext(UserDetailContext)
     const saveInterviewQuestion = useMutation(api.Interview.SaveInterviewQuestion);
+    const router = useRouter();
 
     const onHandleInputChange = (field: string, value: string) => {
         setFormData((prev: any) => ({
@@ -46,19 +49,21 @@ const CreateInterviewDialog = () => {
             console.log("Response:", result.data);
 
             if (result?.data?.status === 429) {
+                toast.warning(result?.data?.result)
                 console.log(result?.data?.result)
                 return
             }
 
             //Save to database;
             //@ts-ignore
-            const resp = await saveInterviewQuestion({
+            const interviewId = await saveInterviewQuestion({
                 questions: result.data?.questions,
                 resumeUrl: result?.data.resumeUrl,
                 uid: userDetail?._id,
                 jobTitle: formData?.jobTitle,
                 jobDescription: formData?.jobDescription
             })
+            router.push('/interview/'+ interviewId)
 
         } catch (e: unknown) {
             if (axios.isAxiosError(e)) {
