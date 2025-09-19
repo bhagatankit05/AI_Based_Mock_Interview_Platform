@@ -3,6 +3,7 @@ import ImageKit from "imagekit";
 import axios from "axios";
 import { aj } from "@/utils/arcjet";
 import { currentUser } from "@clerk/nextjs/server";
+import { stat } from "fs";
 
 const imagekit = new ImageKit({
     publicKey: process.env.IMAGEKIT_URL_PUBLIC_KEY as string,
@@ -50,6 +51,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({
                 questions: result.data?.message?.content?.questions,
                 resumeUrl: uploadResponse?.url,
+                status:200
             });
         } else {
             if (!jobTitle || !jobDescription) {
