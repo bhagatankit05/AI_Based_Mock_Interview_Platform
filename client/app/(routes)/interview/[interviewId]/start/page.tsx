@@ -1,5 +1,6 @@
 "use client"
 import { api } from '@/convex/_generated/api';
+import axios from 'axios';
 import { useConvex } from 'convex/react';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
@@ -25,6 +26,11 @@ const StartInterview = () => {
   useEffect(() => {
     GetInterviewQuestions();
   }, [interviewId])
+
+  const GenerateFeedback= async()=>{
+    const result = await axios.post('/api/generate-feedback',{
+      messages:messages});
+  }
 
   const GetInterviewQuestions = async () => {
     const result = await convex.query(api.Interview.GetInterviewQuestions, {
